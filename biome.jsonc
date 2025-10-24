@@ -1,0 +1,73 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
+	"vcs": {
+		"enabled": false,
+		"clientKind": "git",
+		"useIgnoreFile": false
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"includes": ["**", "!node_modules", "!dist", "!build", "!generated"]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 100
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+				"useConst": "error",
+				"noEnum": "error",
+				"noCommonJs": "error",
+				"noDoneCallback": "error",
+				"noMagicNumbers": "error",
+				"noNamespace": "error",
+				"noNegationElse": "error",
+				"noYodaExpression": "error",
+				"useBlockStatements": "error",
+				"useAsConstAssertion": "error",
+				"useConsistentArrayType": {
+					"level": "error",
+					"options": {
+						"syntax": "shorthand"
+					}
+				},
+				"noParameterAssign": "error",
+				"noUnusedTemplateLiteral": "error",
+				"useDefaultParameterLast": "error",
+				"useDefaultSwitchClause": "error",
+				"useExportType": "error",
+				"useFragmentSyntax": "error",
+				"useSingleVarDeclarator": "error",
+				"useTemplate": "error",
+				"useForOf": "warn",
+				"noExportedImports": "warn",
+				"noNestedTernary": "warn",
+				"noNonNullAssertion": "warn",
+				"noInferrableTypes": "warn"
+			},
+			"suspicious": {
+				"noVar": "error",
+				"noAlert": "error",
+				"noDoubleEquals": "error"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double"
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	}
+}
