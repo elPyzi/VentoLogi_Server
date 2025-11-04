@@ -1,6 +1,6 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { MailModule, PrismaModule, RedisModule } from '@shared/modules';
 import configuration from '@config/app/configuration';
 import { validateConfig } from '@utils/validateConfig';
@@ -8,6 +8,7 @@ import { AuthModule } from '@modules/auth';
 import { UsersModule } from '@modules/users';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { TimestampExceptionFilter } from '@shared/filters';
 
 @Module({
   imports: [
@@ -31,6 +32,10 @@ import { PassportModule } from '@nestjs/passport';
         new ValidationPipe({
           transform: true,
         }),
+    },
+    {
+      provide: APP_FILTER,
+      useClass: TimestampExceptionFilter,
     },
   ],
 })
