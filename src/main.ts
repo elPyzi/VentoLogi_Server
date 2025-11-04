@@ -1,16 +1,22 @@
-import { ConfigService } from "@nestjs/config";
-import { NestFactory } from "@nestjs/core";
-import type { ENV } from "@schemes/configScheme";
-import { AppModule } from "./app.module";
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import type { ENV } from '@shared/schemes/configScheme';
+import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
-	const configService = app.get<ConfigService<ENV>>(ConfigService);
+  const app = await NestFactory.create(AppModule);
+  app.use(cookieParser());
+  const configService = app.get<ConfigService<ENV>>(ConfigService);
 
-	const apiPrefix = configService.get<string>("API_PREFIX");
-	const port = configService.get<number>("PORT");
+  const apiPrefix = configService.get<string>('API_PREFIX');
+  const port = configService.get<number>('PORT');
 
-	app.setGlobalPrefix(apiPrefix);
-	await app.listen(port);
+  if (!apiPrefix || !port) {
+    process.exit(1);
+  }
+
+  app.setGlobalPrefix(apiPrefix);
+  await app.listen(port);
 }
 bootstrap();

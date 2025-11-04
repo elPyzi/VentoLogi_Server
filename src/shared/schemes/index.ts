@@ -1,0 +1,1 @@
+export { configScheme } from './configScheme';
