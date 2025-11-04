@@ -21,11 +21,10 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@utils/*": ["./src/utils/*"],
-			"@schemes/*": ["./src/schemes/*"],
 			"@shared/*": ["./src/shared/*"],
-			"@constants/*": ["./src/constants/*"],
 			"@modules/*": ["./src/modules/*"],
-			"@config/*": ["./src/config/*"]
-		}
+			"@config/*": ["./src/config/*"],
+            "@view/*": ["./src/view/*"]
+        }
 	}
 }
