@@ -23,7 +23,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   private configService: ConfigService;
 
   async validate(payload: TToken) {
-    console.log(payload);
     return payload;
   }
 }

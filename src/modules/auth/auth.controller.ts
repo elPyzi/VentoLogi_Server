@@ -1,4 +1,4 @@
-import { CreateUserDto, User } from '@modules/users';
+import { CreateUserDto } from '@modules/users';
 import {
   Body,
   Controller,
@@ -14,10 +14,10 @@ import {
 import { Request as ERequest, Response as EResponse } from 'express';
 import { VerifyUserDto } from '@modules/auth/dto';
 import { JwtAuthGuard, LocalAuthGuard } from '@shared/guards';
-import { DAY, FIFTEEN_MINUTES } from '@shared/constants';
 import { AuthService } from '@modules/auth';
 import { AUTH_MODULE_ENDPOINTS } from '@modules/auth/constants';
-import { TToken } from '@shared/models';
+import { ms } from '@/utils';
+import { DAY, HOUR } from '@shared/constants';
 
 @Controller(AUTH_MODULE_ENDPOINTS.BASIC)
 export class AuthController {
@@ -45,14 +45,17 @@ export class AuthController {
     if (!req.user) throw new InternalServerErrorException();
 
     const { accessToken, refreshToken } = await this.authService.login(
-      req.user as User,
+      req.user,
     );
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      maxAge: FIFTEEN_MINUTES,
+      maxAge: ms.hours(HOUR),
     });
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: DAY });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: ms.days(DAY),
+    });
 
     return res.json(req.user);
   }
@@ -61,19 +64,23 @@ export class AuthController {
   @Get(AUTH_MODULE_ENDPOINTS.LOGOUT)
   @HttpCode(HttpStatus.OK)
   async logout(@Request() req: ERequest) {
-    if (!req.user) throw new InternalServerErrorException();
+    if (!req.token) throw new InternalServerErrorException();
 
-    return await this.authService.logout(req.user as TToken);
+    return await this.authService.logout(req.token);
   }
 
   @Get(AUTH_MODULE_ENDPOINTS.REFRESH)
   @HttpCode(HttpStatus.OK)
   async refresh(@Request() req: ERequest, @Response() res: EResponse) {
-    const refreshToken: string = req.cookies.get('refreshToken');
+    const refreshToken: string = req.cookies['refreshToken'];
     const { accessToken } = await this.authService.refresh(refreshToken);
+    if (!accessToken) throw new InternalServerErrorException();
+
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      maxAge: FIFTEEN_MINUTES,
+      maxAge: ms.hours(HOUR),
     });
+
+    return res.json();
   }
 }
