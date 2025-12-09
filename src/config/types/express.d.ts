@@ -3,6 +3,7 @@ import { TToken } from '@shared/models';
 
 declare module 'express' {
   interface Request {
-    user?: User | TToken;
+    user?: User;
+    token?: TToken;
   }
 }

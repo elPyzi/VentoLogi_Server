@@ -11,7 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { MailService, RedisService } from '@shared/modules';
 import { AuthLoginDto, VerifyUserDto } from '@modules/auth/dto';
 import { UsersService } from '@/modules/users';
-import { DAY, FIVE_MINUTES, REDIS_KEY } from '@shared/constants';
+import { REDIS_KEY } from '@shared/constants';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TToken } from '@shared/models';
@@ -120,13 +120,16 @@ export class AuthService {
   async refresh(refreshToken: string) {
     const isRefreshTokenExist =
       await this.redisService.getValue<string>(refreshToken);
-    if (!isRefreshTokenExist) throw new UnauthorizedException();
+    if (!isRefreshTokenExist)
+      throw new UnauthorizedException('refresh token is not exist');
 
     const payload: TToken = await this.jwtService.verifyAsync(refreshToken, {
       secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
     });
 
-    const accessToken = await this.jwtService.signAsync(payload, {
+    const { iat, exp, ...userPayload } = payload;
+
+    const accessToken = await this.jwtService.signAsync(userPayload, {
       secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
       expiresIn: '15m',
     });
