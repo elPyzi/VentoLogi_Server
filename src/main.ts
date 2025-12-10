@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import type { ENV } from '@shared/schemes/configScheme';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,18 @@ async function bootstrap() {
   });
 
   const configService = app.get<ConfigService<ENV>>(ConfigService);
+
+  const config = new DocumentBuilder()
+    .setTitle('VentoLogi')
+    .setDescription('VentoLogi API cool')
+    .setVersion('1.0')
+    .addGlobalResponse({
+      status: 500,
+      description: 'Internal server error',
+    })
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
 
   const apiPrefix = configService.get<string>('API_PREFIX');
   const port = configService.get<number>('PORT');

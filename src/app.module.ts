@@ -9,6 +9,7 @@ import { UsersModule } from '@modules/users';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TimestampExceptionFilter } from '@shared/filters';
+import { OrdersModule } from '@modules/orders/Orders.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TimestampExceptionFilter } from '@shared/filters';
     PassportModule.register({ defaultStrategy: 'jwt', global: true }),
     UsersModule,
     AuthModule,
+    OrdersModule,
   ],
   providers: [
     {
