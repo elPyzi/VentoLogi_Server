@@ -11,7 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { MailService, RedisService } from '@shared/modules';
 import { AuthLoginDto, VerifyUserDto } from '@modules/auth/dto';
 import { UsersService } from '@/modules/users';
-import { REDIS_KEY } from '@shared/constants';
+import { DAY, FIVE_MINUTES, REDIS_KEY } from '@shared/constants';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TToken } from '@shared/models';

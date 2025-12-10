@@ -5,18 +5,22 @@ export const seedStatuses = async (prisma: PrismaClient) => {
     const orderStatuses = await prisma.orderStatuses.createMany({
       data: [
         { name: 'CREATED' },
-        { name: 'IN PROGRESS' },
+        { name: 'IS BEING PROGRESSED' },
         { name: 'DELETED' },
         { name: 'CANCELED' },
+        { name: 'DELAYED' },
+        { name: 'DELIVERED' },
       ],
     });
 
     const deliveryStatuses = await prisma.deliveryStatuses.createMany({
       data: [
         { name: 'CREATED' },
-        { name: 'IN PROGRESS' },
+        { name: 'IS BEING PROGRESSED' },
         { name: 'DELETED' },
         { name: 'CANCELED' },
+        { name: 'DELAYED' },
+        { name: 'DELIVERED' },
       ],
     });
 

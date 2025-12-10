@@ -18,19 +18,19 @@ model Companies {
 }
 
 model Delivery {
-  id             Int               @id @default(autoincrement())
-  name           String            @db.VarChar(100)
-  status_id      Int?
-  start          DateTime?         @db.Timestamp(6)
-  finish         DateTime?         @db.Timestamp(6)
-  total_cost     Decimal?          @db.Decimal
+  id             Int              @id @default(autoincrement())
+  name           String           @db.VarChar(100)
+  statusId       Int
+  start          DateTime?        @db.Timestamp(6)
+  finish         DateTime?        @db.Timestamp(6)
+  total_cost     Decimal?         @db.Decimal
   transport_id   Int?
   company_id     Int?
   dock_id        Int?
-  company        Companies?        @relation(fields: [company_id], references: [id])
-  dock           Dock?             @relation(fields: [dock_id], references: [id])
-  deliveryStatus DeliveryStatuses? @relation(fields: [status_id], references: [id])
-  transport      Transports?       @relation(fields: [transport_id], references: [id])
+  company        Companies?       @relation(fields: [company_id], references: [id])
+  dock           Dock?            @relation(fields: [dock_id], references: [id])
+  deliveryStatus DeliveryStatuses @relation(fields: [statusId], references: [id])
+  transport      Transports?      @relation(fields: [transport_id], references: [id])
   flightLogs     FlightLog[]
   orders         Orders[]
   routePoints    RoutePoints[]
@@ -91,20 +91,22 @@ model OrderStatuses {
 }
 
 model Orders {
-  id           Int            @id @default(autoincrement())
-  name         String         @db.VarChar(100)
-  status_id    Int?
-  cost         Decimal?       @db.Decimal
-  weight       Decimal?       @db.Decimal
-  created_at   DateTime?      @default(now()) @db.Timestamp(6)
-  finish_at    DateTime?      @db.Timestamp(6)
-  user_id      Int?
-  delivery_id  Int?
-  transportsId Int?
-  deliveries   Delivery?      @relation(fields: [delivery_id], references: [id])
-  orderStatus  OrderStatuses? @relation(fields: [status_id], references: [id])
-  transports   Transports?    @relation(fields: [transportsId], references: [id])
-  user         Users?         @relation(fields: [user_id], references: [id])
+  id            Int           @id @default(autoincrement())
+  name          String        @db.VarChar(100)
+  statusId      Int
+  cost          Decimal?      @db.Decimal
+  weight        Decimal?      @db.Decimal
+  created_at    DateTime?     @default(now()) @db.Timestamp(6)
+  finish_at     DateTime?     @db.Timestamp(6)
+  productTypeId Int?          @unique
+  userId        Int
+  deliveryId    Int?
+  transportsId  Int?
+  productType   ProductType?  @relation(fields: [productTypeId], references: [id])
+  orderStatus   OrderStatuses @relation(fields: [statusId], references: [id])
+  transports    Transports?   @relation(fields: [transportsId], references: [id])
+  user          Users?        @relation(fields: [userId], references: [id])
+  Delivery      Delivery?     @relation(fields: [deliveryId], references: [id])
 
   @@map("orders")
 }
@@ -176,4 +178,12 @@ model WeatherCondition {
   precipitation  Decimal?             @db.Decimal
 
   @@map("weather_conditions")
+}
+
+model ProductType {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique @db.VarChar(255)
+  order Orders?
+
+  @@map("product_type")
 }

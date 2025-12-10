@@ -64,9 +64,7 @@ const transports = [
 ];
 
 export const seedTransport = async (prisma: PrismaClient) => {
-  for (const transport of transports) {
-    await prisma.transports.create({
-      data: transport,
-    });
-  }
+  await prisma.transports.createMany({
+    data: transports,
+  });
 };
