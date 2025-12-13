@@ -1,4 +1,4 @@
-import { ORDER_STATUSES, PRODUCT_TYPES } from '@modules/orders/constants';
+import { ORDER_STATUSES, PRODUCT_TYPES } from './constants';
 
 export type ProductType = (typeof PRODUCT_TYPES)[keyof typeof PRODUCT_TYPES];
 export type OrderStatusesType =

@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDate,
   IsNotEmpty,
@@ -5,11 +6,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ProductType } from '../types';
-import { ApiProperty } from '@nestjs/swagger';
-import { PRIORITY } from '@shared/constants';
 
-export class CreateOrderDto {
+export class CreateDeliveryDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -17,24 +15,31 @@ export class CreateOrderDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsNumber()
-  weight: number;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsNumber()
-  cost?: number;
-
-  @ApiProperty()
-  @IsOptional()
   @IsDate()
-  finishAt?: Date;
+  start: Date;
 
   @ApiProperty()
   @IsNotEmpty()
-  priority: PRIORITY;
+  @IsDate()
+  finish: Date;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  totalCost?: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  transportId?: number;
 
   @ApiProperty()
   @IsNotEmpty()
-  productType: ProductType;
+  @IsNumber()
+  companyId: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  dockId: number;
 }

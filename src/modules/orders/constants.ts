@@ -1,4 +1,4 @@
-import { ProductType } from '@modules/orders/types';
+import { ProductType } from './types';
 
 export const ORDERS_MODULE_ENDPOINTS = {
   BASIC: 'orders',

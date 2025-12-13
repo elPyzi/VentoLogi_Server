@@ -14,12 +14,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { OrdersService } from './Orders.service';
-import { ORDERS_MODULE_ENDPOINTS } from '@modules/orders/constants';
+import { ORDERS_MODULE_ENDPOINTS } from './constants';
 import { JwtAuthGuard, RolesGuard } from '@shared/guards';
 import { Request as ERequest } from 'express';
 import { Roles } from '@shared/decorators';
 import { ROLES } from '@shared/constants';
-import { CreateOrderDto, UpdateOrderDto } from '@modules/orders/dto';
+import { CreateOrderDto, UpdateOrderDto } from './dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(ROLES.SHIPPER, ROLES.ADMIN)

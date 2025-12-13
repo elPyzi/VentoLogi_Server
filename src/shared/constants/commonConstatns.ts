@@ -4,3 +4,9 @@ export const FIVE_MINUTES = 5 * MINUTE;
 export const FIFTEEN_MINUTES = 15 * MINUTE;
 export const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
+
+export const enum PRIORITY {
+  MINOR = 1,
+  MAJOR = 2,
+  CRITICAL = 3,
+}

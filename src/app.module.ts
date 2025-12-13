@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TimestampExceptionFilter } from '@shared/filters';
 import { OrdersModule } from '@modules/orders/Orders.module';
+import { DeliveryModule } from '@/modules';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { OrdersModule } from '@modules/orders/Orders.module';
     UsersModule,
     AuthModule,
     OrdersModule,
+    DeliveryModule,
   ],
   providers: [
     {

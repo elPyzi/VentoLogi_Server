@@ -18,6 +18,8 @@ import { AuthService } from '@modules/auth';
 import { AUTH_MODULE_ENDPOINTS } from '@modules/auth/constants';
 import { ms } from '@/utils';
 import { DAY, HOUR } from '@shared/constants';
+import { ResetPasswordDto } from '@modules/auth/dto/reset-password.dto';
+import { ResetPasswordInitDto } from '@modules/auth/dto/resetPasswordInit.dto';
 
 @Controller(AUTH_MODULE_ENDPOINTS.BASIC)
 export class AuthController {
@@ -44,7 +46,7 @@ export class AuthController {
   ) {
     if (!req.user) throw new InternalServerErrorException();
 
-    const { accessToken, refreshToken } = await this.authService.login(
+    const { accessToken, refreshToken, result } = await this.authService.login(
       req.user,
     );
 
@@ -52,12 +54,13 @@ export class AuthController {
       httpOnly: true,
       maxAge: ms.hours(HOUR),
     });
+
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       maxAge: ms.days(DAY),
     });
 
-    return res.json(req.user);
+    return res.json(result);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -82,5 +85,23 @@ export class AuthController {
     });
 
     return res.json();
+  }
+
+  @Post(AUTH_MODULE_ENDPOINTS.RESET_PASSWORD.INIT)
+  @HttpCode(HttpStatus.ACCEPTED)
+  async resetPasswordInit(@Body() resetPasswordInitDto: ResetPasswordInitDto) {
+    return await this.authService.resetPasswordInit(resetPasswordInitDto);
+  }
+
+  @Post(AUTH_MODULE_ENDPOINTS.RESET_PASSWORD.VERIFY)
+  @HttpCode(HttpStatus.OK)
+  async resetPasswordVerify(@Body() verifyInfo: VerifyUserDto) {
+    return await this.authService.resetPasswordVerify(verifyInfo);
+  }
+
+  @Post(AUTH_MODULE_ENDPOINTS.RESET_PASSWORD.RESET)
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return await this.authService.resetPassword(resetPasswordDto);
   }
 }

@@ -28,7 +28,7 @@ model Delivery {
   company_id     Int?
   dock_id        Int?
   company        Companies?       @relation(fields: [company_id], references: [id])
-  dock           Dock?            @relation(fields: [dock_id], references: [id])
+  dock           Docks?           @relation(fields: [dock_id], references: [id])
   deliveryStatus DeliveryStatuses @relation(fields: [statusId], references: [id])
   transport      Transports?      @relation(fields: [transport_id], references: [id])
   flightLogs     FlightLog[]
@@ -46,12 +46,12 @@ model DeliveryStatuses {
   @@map("delivery_statuses")
 }
 
-model Dock {
-  id         Int                   @id @default(autoincrement())
-  name       String                @unique @db.VarChar(100)
-  geo_point  Unsupported("point")?
-  city       String?               @db.VarChar(100)
-  phone      String?               @db.VarChar(20)
+model Docks {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique @db.VarChar(100)
+  geo_point  Json
+  city       String     @db.VarChar(100)
+  phone      String     @db.VarChar(20)
   deliveries Delivery[]
 
   @@map("docks")
@@ -102,6 +102,8 @@ model Orders {
   userId        Int
   deliveryId    Int?
   transportsId  Int?
+  priorityId    Int
+  priority      Priority      @relation(fields: [priorityId], references: [id])
   productType   ProductType?  @relation(fields: [productTypeId], references: [id])
   orderStatus   OrderStatuses @relation(fields: [statusId], references: [id])
   transports    Transports?   @relation(fields: [transportsId], references: [id])
@@ -159,7 +161,7 @@ model Users {
   full_name   String?   @db.VarChar(100)
   avatar      String?   @db.VarChar(255)
   created_at  DateTime? @default(now()) @db.Timestamp(6)
-  role_id     Int?
+  role_id     Int
   client_type String?   @db.VarChar(20)
   orders      Orders[]
   role        Roles?    @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -186,4 +188,12 @@ model ProductType {
   order Orders?
 
   @@map("product_type")
+}
+
+model Priority {
+  id     Int      @id @default(autoincrement())
+  type   String   @unique @db.VarChar(255)
+  Orders Orders[]
+
+  @@map("priority")
 }
