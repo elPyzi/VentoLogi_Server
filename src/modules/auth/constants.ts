@@ -9,4 +9,9 @@ export const AUTH_MODULE_ENDPOINTS = {
   },
   LOGOUT: 'logout',
   REFRESH: 'refresh',
+  RESET_PASSWORD: {
+    INIT: 'reset-password/init',
+    VERIFY: 'reset-password/verify',
+    RESET: 'reset-password',
+  },
 };

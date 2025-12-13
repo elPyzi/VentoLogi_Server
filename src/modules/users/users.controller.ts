@@ -8,7 +8,7 @@ import {
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '@shared/guards';
 import { Request as ERequest } from 'express';
-import { USERS_MODULE_ENDPOINTS } from '@modules/users/constants';
+import { USERS_MODULE_ENDPOINTS } from './constants';
 
 @Controller(USERS_MODULE_ENDPOINTS.BASIC)
 export class UsersController {

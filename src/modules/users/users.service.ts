@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  UseGuards,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '@shared/modules';
 import { CreateUserDto } from '@/modules/users';
 import { ROLES } from '@shared/constants';
@@ -46,6 +42,17 @@ export class UsersService {
     return this.prismaService.users.findFirst({
       where: {
         email,
+      },
+    });
+  }
+
+  async updatePasswordByEmail(password: string, email: string) {
+    await this.prismaService.users.update({
+      where: {
+        email,
+      },
+      data: {
+        password,
       },
     });
   }

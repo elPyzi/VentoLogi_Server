@@ -6,11 +6,11 @@ import { codeEmail } from '@view/codeEmail';
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendVerificationCode(email: string, code: string) {
+  async sendVerificationCode(email: string, code: string, title: string) {
     try {
       await this.mailerService.sendMail({
         to: email,
-        subject: 'Подтверждение регистрации',
+        subject: title,
         html: codeEmail(code),
       });
     } catch (error) {

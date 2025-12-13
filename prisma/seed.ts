@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import {
+  seedDocks,
+  seedPriority,
   seedProductType,
   seedRoles,
   seedStatuses,
@@ -15,6 +17,8 @@ const seed = async () => {
   await seedUsers(prisma);
   await seedTransport(prisma);
   await seedProductType(prisma);
+  await seedDocks(prisma);
+  await seedPriority(prisma);
 };
 
 seed()
