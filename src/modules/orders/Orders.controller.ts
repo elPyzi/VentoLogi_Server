@@ -32,11 +32,12 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() dto: CreateOrderDto, @Req() req: ERequest) {
+    console.log('error here: ', req.token);
     if (!req.token) {
       throw new InternalServerErrorException();
     }
 
-    return this.ordersService.create(dto, req.token.id);
+    return await this.ordersService.create(dto, req.token.id);
   }
 
   @Get(ORDERS_MODULE_ENDPOINTS.GET_ORDERS)

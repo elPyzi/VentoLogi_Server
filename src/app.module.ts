@@ -11,6 +11,7 @@ import { PassportModule } from '@nestjs/passport';
 import { TimestampExceptionFilter } from '@shared/filters';
 import { OrdersModule } from '@modules/orders/Orders.module';
 import { DeliveryModule } from '@/modules';
+import { StripeModule } from '@shared/modules/stripe/stripe.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { DeliveryModule } from '@/modules';
     AuthModule,
     OrdersModule,
     DeliveryModule,
+    StripeModule.forRootAsync(),
   ],
   providers: [
     {

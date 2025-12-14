@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TToken } from '@shared/models';
+import { cookieJwtExtractor } from '@utils/cookieJwtExtractor';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -12,8 +13,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new Error('JWT_ACCESS_SECRET is not defined');
     }
 
+    console.log('secret ', secret);
+
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([cookieJwtExtractor]),
       ignoreExpiration: false,
       secretOrKey: secret,
     });
@@ -23,6 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   private configService: ConfigService;
 
   async validate(payload: TToken) {
+    console.log('user in local', payload);
     return payload;
   }
 }
