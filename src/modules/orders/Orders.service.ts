@@ -1,8 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrderDto, UpdateOrderDto } from './dto';
 import { PrismaService } from '@shared/modules';
-import { BASE_RATE_WEIGHT, PRODUCT_TYPE_COEFFICIENTS } from './constants';
+import {
+  BASE_RATE_WEIGHT,
+  ORDER_STATUSES,
+  PRODUCT_TYPE_COEFFICIENTS,
+} from './constants';
 import { ProductType } from './types';
+import { PRIORITY } from '@shared/constants';
 
 @Injectable()
 export class OrdersService {
@@ -22,24 +27,27 @@ export class OrdersService {
   }
 
   async create(createOrderDto: CreateOrderDto, userId: number) {
+    console.log(createOrderDto);
     const calculatedCost = await this.calculateOrderPrice(
       createOrderDto.weight,
       createOrderDto.productType,
     );
 
-    // await this.prismaService.orders.create({
-    //   data: {
-    //     userId,
-    //     name: createOrderDto.name,
-    //     weight: createOrderDto.weight,
-    //     productTypeId: createOrderDto.productType,
-    //     statusId: ORDER_STATUSES.CREATED,
-    //     cost: createOrderDto.cost ?? calculatedCost,
-    //     finish_at: createOrderDto.finishAt ?? null,
-    //     created_at: new Date(),
-    //     priority: createOrderDto.priority ?? PRIORITY.MINOR,
-    //   },
-    // });
+    await this.prismaService.orders.create({
+      data: {
+        userId,
+        name: createOrderDto.name,
+        weight: createOrderDto.weight,
+        productTypeId: Number(createOrderDto.productType),
+        statusId: ORDER_STATUSES.CREATED,
+        cost: createOrderDto.cost ?? calculatedCost,
+        finish_at: createOrderDto.finishAt ?? null,
+        created_at: new Date(),
+        priorityId: Number(createOrderDto.priority),
+      },
+    });
+
+    return calculatedCost ?? createOrderDto.finishAt;
   }
 
   async updateOrder(updateOrderDto: UpdateOrderDto, orderId: number) {
